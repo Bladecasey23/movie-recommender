@@ -10,6 +10,7 @@ import streamlit as st
 TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
 
 # ====== Functions ======
+st.write("✅ App is running!")  # remove later
 
 def fetch_poster(movie_title):
     """Fetch movie poster URL from TMDB API"""

@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import requests
+import streamlit as st
 
 st.set_page_config(page_title="Movie Recommender 🎬", page_icon="🎥", layout="centered")
 
 # ====== Config ======
-TMDB_API_KEY = "182950a3164a9f4ae4e52052982bc88e"  # <-- Put your TMDB API key here
+TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
 
 # ====== Functions ======
 

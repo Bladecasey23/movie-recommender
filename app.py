@@ -1,16 +1,14 @@
 import streamlit as st
 st.set_page_config(page_title="Movie Recommender 🎬", page_icon="🎥", layout="centered")
+
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import requests
-import streamlit as st
 
-
-# ====== Config ======
+# 🔐 TMDB API Key from Streamlit Secrets
 TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
 
 # ====== Functions ======
-st.write("✅ App is running!")  # remove later
 
 def fetch_poster(movie_title):
     """Fetch movie poster URL from TMDB API"""
@@ -20,19 +18,16 @@ def fetch_poster(movie_title):
     if data.get("results"):
         poster_path = data["results"][0].get("poster_path")
         if poster_path:
-            full_path = f"https://image.tmdb.org/t/p/w500{poster_path}"
-            return full_path
+            return f"https://image.tmdb.org/t/p/w500{poster_path}"
     return None
 
 def recommend(movie_name, similarity_df):
     if movie_name in similarity_df:
-        # Get top 5 similar movies excluding the movie itself
         return similarity_df[movie_name].sort_values(ascending=False)[1:6].index.tolist()
     else:
         return []
 
 # ====== Load Data ======
-
 @st.cache_data
 def load_data():
     movies = pd.read_csv('movies.csv')
@@ -45,9 +40,7 @@ def load_data():
 
 movies, similarity_df = load_data()
 
-# ====== Streamlit UI ======
-
-
+# ====== UI Styling ======
 st.markdown("""
     <style>
     .title {

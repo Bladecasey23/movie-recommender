@@ -12,14 +12,18 @@ TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
 
 def fetch_poster(movie_title):
     """Fetch movie poster URL from TMDB API"""
-    url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={movie_title}"
-    response = requests.get(url)
-    data = response.json()
-    if data.get("results"):
-        poster_path = data["results"][0].get("poster_path")
-        if poster_path:
-            return f"https://image.tmdb.org/t/p/w500{poster_path}"
-    return None
+    try:
+        url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={movie_title}"
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        if data.get("results"):
+            poster_path = data["results"][0].get("poster_path")
+            if poster_path:
+                return f"https://image.tmdb.org/t/p/w500{poster_path}"
+    except Exception as e:
+        print(f"Error fetching poster for '{movie_title}': {e}")
+    return "https://via.placeholder.com/150x225?text=No+Image"
 
 def recommend(movie_name, similarity_df):
     if movie_name in similarity_df:
